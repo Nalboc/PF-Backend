@@ -74,6 +74,7 @@ route.get("/:pid", async (req, res) => {
 //POST
 route.post("/", async (req, res) => {
   const nuevoProducto = req.body;
+  console.log(req.body);
   try {
     const data = await fs.promises.readFile("./productos.json", "utf-8");
     let listaDeProductos = JSON.parse(data);
