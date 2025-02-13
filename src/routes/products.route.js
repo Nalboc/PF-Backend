@@ -73,33 +73,45 @@ route.get("/:pid", async (req, res) => {
 });
 //POST
 route.post("/", async (req, res) => {
+  console.log("Headers:", req.headers);
+  console.log("Body:", req.body);
   const nuevoProducto = req.body;
-  console.log(req.body);
+  if (
+    !nuevoProducto.title ||
+    !nuevoProducto.description ||
+    !nuevoProducto.code ||
+    !nuevoProducto.price ||
+    !nuevoProducto.status ||
+    !nuevoProducto.stock ||
+    !nuevoProducto.category
+  ) {
+    return res.status(400).json({ mensaje: "Faltan campos requeridos." });
+  }
+
   try {
     const data = await fs.promises.readFile("./productos.json", "utf-8");
     let listaDeProductos = JSON.parse(data);
-    if (compararCampos(nuevoProducto, plantilla)) {
-      nuevoProducto.id =
-        listaDeProductos.length > 0
-          ? parseInt(listaDeProductos[listaDeProductos.length - 1].id) + 1
-          : 1;
-      listaDeProductos.push(nuevoProducto);
-      await fs.promises.writeFile(
-        "./productos.json",
-        JSON.stringify(listaDeProductos, null, 2)
-      );
-      console.log(listaDeProductos);
-      return res.json({ mensaje: "Producto agregado correctamente." });
-    } else {
-      return res.json({
-        mensaje: "Producto invalido, vuelve a rellenar los campos.",
-      });
-    }
+    const nuevoId =
+      listaDeProductos.length > 0
+        ? Math.max(...listaDeProductos.map((p) => p.id)) + 1 // Genera un ID numérico incremental
+        : 1;
+    const productoConId = { ...nuevoProducto, id: nuevoId };
+    listaDeProductos.push(productoConId);
+    await fs.promises.writeFile(
+      "./productos.json",
+      JSON.stringify(listaDeProductos, null, 2)
+    );
+    console.log("Producto agregado:", productoConId);
+    return res.status(201).json({
+      mensaje: "Producto agregado correctamente.",
+      producto: productoConId,
+    });
   } catch (err) {
     console.error("Error al leer o escribir el archivo:", err);
     return res.status(500).json({ mensaje: "Error al procesar la solicitud." });
   }
 });
+
 //PUT
 route.put("/:pid", async (req, res) => {
   const productoModificado = req.body;

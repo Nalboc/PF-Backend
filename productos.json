@@ -38,5 +38,35 @@
     "stock": 1,
     "category": "ejemplos",
     "id": 5
+  },
+  {
+    "title": "Producto de modificado",
+    "description": "Descripción de ejemplo",
+    "code": "P001",
+    "price": 100,
+    "status": true,
+    "stock": 10,
+    "category": "General",
+    "id": 6
+  },
+  {
+    "title": "Producto de ejemplo",
+    "description": "Descripción de ejemplo",
+    "code": "P001",
+    "price": 100,
+    "status": true,
+    "stock": 10,
+    "category": "General",
+    "id": 9
+  },
+  {
+    "title": "Producto de ejemplo",
+    "description": "Descripción de ejemplo",
+    "code": "P001",
+    "price": 100,
+    "status": true,
+    "stock": 10,
+    "category": "General",
+    "id": 10
   }
 ]

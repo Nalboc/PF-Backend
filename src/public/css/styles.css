@@ -1,0 +1,13 @@
+h1{
+    color: rebeccapurple;
+    justify-self: center;
+}
+div{
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    align-items: center;
+    background-color: rgb(32, 30, 30);
+    width: 50%;
+    color: white;
+}
