@@ -6,7 +6,10 @@ import vistaRouter from "./routes/vista.route.js";
 import productsRoute from "./routes/products.route.js";
 import cartRoute from "./routes/carts.route.js";
 import fs from "node:fs";
-
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
+const stringConection = process.env.MONGO_KEY;
 const app = express();
 const serverHttp = app.listen(8080, () => {
   console.log("SERVIDOR LISTO EN PUERTO 8080");
@@ -21,6 +24,9 @@ app.use("/static", express.static(_dirname + "/public"));
 app.use("/api/products", productsRoute);
 app.use("/api/carts", cartRoute);
 app.use("/", vistaRouter);
+mongoose
+  .connect(stringConection, { dbName: "Bicicletas" })
+  .then(() => console.log("conectado a la base de datos"));
 
 socketServer.on("connection", async (socket) => {
   try {
