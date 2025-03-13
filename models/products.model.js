@@ -17,6 +17,5 @@ get - ALL
 get - BYID
 UPDATE - BYID
 DELETE - BYID
-GET - BYTITLE
 */
 export const ProductModel = model(productCollection, productSchema);
