@@ -7,7 +7,11 @@ const ProductosService = new ProductosDao(ProductModel);
 
 route.get("/", async (req, res) => {
   try {
-    const respuesta = await ProductModel.paginate({}, { limit: 5, page: 1 });
+    const query = req.query;
+    const respuesta = await ProductModel.paginate(
+      {},
+      { limit: query.limit || 10, page: query.page || 1, sort: { stock: 1 } }
+    );
     if (!respuesta)
       return res
         .status(500)
