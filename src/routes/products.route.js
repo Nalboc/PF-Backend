@@ -10,8 +10,18 @@ route.get("/", async (req, res) => {
     const query = req.query;
     const respuesta = await ProductModel.paginate(
       {},
-      { limit: query.limit || 10, page: query.page || 1, sort: { stock: 1 } }
+      {
+        limit: query.limit || 10,
+        page: query.page || 1,
+        sort: query.sort || { stock: 1 },
+      }
     );
+    console.log(query.page);
+    const prevPage = query.page - 1;
+    let prevLink = "None";
+    if (prevPage > 0) {
+      prevLink = `http://localhost:8080/api/products?page=${query.page - 1}`;
+    }
     if (!respuesta)
       return res
         .status(500)
@@ -19,6 +29,7 @@ route.get("/", async (req, res) => {
     res.json({
       mensaje: "peticion get llamado correctamente",
       respuesta,
+      prevLink,
     });
   } catch (e) {
     return res.status(500).json({ mensaje: "error al guardar producto" });
