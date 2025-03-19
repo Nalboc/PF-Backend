@@ -7,14 +7,14 @@ const ProductosService = new ProductosDao(ProductModel);
 
 route.get("/", async (req, res) => {
   try {
-    const respuesta = await ProductosService.getAll();
+    const respuesta = await ProductModel.paginate({}, { limit: 5, page: 1 });
     if (!respuesta)
       return res
         .status(500)
         .json({ mensaje: "error en la consulta a la base de datos" });
     res.json({
       mensaje: "peticion get llamado correctamente",
-      payload: respuesta,
+      respuesta,
     });
   } catch (e) {
     return res.status(500).json({ mensaje: "error al guardar producto" });
