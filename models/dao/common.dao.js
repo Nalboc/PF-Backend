@@ -4,7 +4,7 @@ export class Common {
   }
   async getAll() {
     try {
-      const result = await this.model.find().populate("products.productoID");
+      const result = await this.model.find();
       return result;
     } catch (e) {
       return null;

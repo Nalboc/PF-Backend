@@ -33,12 +33,27 @@ route.get("/:pid", async (req, res) => {
   });
 });
 route.post("/", async (req, res) => {
-  const body = req.body;
-  const respuesta = await ProductosService.crear(body);
-  if (!respuesta)
+  const {
+    title = "",
+    price = 2,
+    category = "",
+    stock = 1,
+    code = "",
+    discount = false,
+  } = req.body;
+  const respuesta = await ProductosService.crear({
+    title,
+    price,
+    category,
+    stock,
+    code,
+    discount,
+  });
+  if (!respuesta) {
     return res
       .status(500)
       .json({ mensaje: "error en la consulta a la base de datos" });
+  }
   res.json({ mensaje: "se guardo el producto", payload: respuesta });
 });
 route.put("/:pid", async (req, res) => {

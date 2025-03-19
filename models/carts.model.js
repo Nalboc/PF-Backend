@@ -10,7 +10,6 @@ const cartsSchema = new Schema({
       },
     },
   ],
-  totalPrice: Number,
 });
 /*
 get - ALL 

@@ -10,57 +10,52 @@ const ProductService = new ProductosDao(ProductModel);
 
 route.get("/", async (req, res) => {
   try {
-    const body = req.body;
-    const respuesta = await CarritoService.getAll();
-    /* CarritoService.AddProductToCart("67d2f6e31d213d1fd92e781f", body); */
+    const respuesta = await CarritoService.getCarritos();
     res.json({
       mensaje: "peticion get llamado correctamente",
       payload: respuesta,
     });
   } catch (e) {
-    return res.status(500).json({ mensaje: "error al guardar producto" });
+    return res.status(500).json({ mensaje: "error al llamado get" });
   }
 });
 route.get("/:cid", async (req, res) => {
   try {
     const { cid } = req.params;
     const respuesta = await CarritoService.getById(cid);
-    /* CarritoService.AddProductToCart("67d2f6e31d213d1fd92e781f", body); */
     res.json({
-      mensaje: "peticion get llamado correctamente",
+      mensaje: "peticion getbyid llamado correctamente",
       payload: respuesta,
     });
   } catch (e) {
-    return res.status(500).json({ mensaje: "error al guardar producto" });
+    return res.status(500).json({ mensaje: "error al llamado getbyid" });
   }
 });
 route.post("/", async (req, res) => {
-  const body = req.body;
-  const respuesta = await CarritoService.crear(body);
-  res.json({ mensaje: "se guardo el producto", payload: respuesta });
-});
-route.put("/:Cid/:Pid", async (req, res) => {
-  const carritoId = req.params.Cid;
-  const productoId = req.params.Pid;
-  const producto = await ProductService.getById(productoId);
-  const carrito = await CarritoService.getById(carritoId);
-  if (producto) {
-    console.log("producto encontrado");
-    console.log(producto);
-    carrito.products.push[producto.title];
-    /* const productsList = { products: [{ title: producto.title }] };
-    const respuesta = await CarritoService.update(carritoId, productsList); */
-    res.json({ mensaje: "se guardo el producto", payload: carrito });
-  } else {
-    res.json({ mensaje: "ese producto no existe" });
+  try {
+    const body = req.body;
+    const respuesta = await CarritoService.crear(body);
+    res.json({ mensaje: "se guardo el carrito vacio", payload: respuesta });
+  } catch (e) {
+    return res.status(500).json({ mensaje: "error al crear el carrito" });
   }
 });
-
 route.put("/:cid/asignar/:pid", async (req, res) => {
   const { cid, pid } = req.params;
   const carrito = await CarritoService.getById(cid);
   carrito.products.push({ productoID: pid });
   const carritoActualizado = await CarritoService.update({ _id: cid }, carrito);
   res.json({ mensaje: "producto agregado", payload: carritoActualizado });
+});
+route.delete("/:cid", async (req, res) => {
+  const { cid } = req.params;
+  const resultado = await CarritoService.delete(cid);
+  if (!resultado)
+    return res
+      .status(500)
+      .json({ mensaje: "error en la consulta a la base de datos" });
+  res
+    .status(200)
+    .json({ mensaje: "se elimino un producto", payload: resultado });
 });
 export default route;
