@@ -18,9 +18,9 @@ export class Common {
       return null;
     }
   }
-  async crear(object) {
+  async crear(body) {
     try {
-      const result = await this.model.create(object);
+      const result = await this.model.create(body);
       return result;
     } catch (e) {
       console.log("error");
