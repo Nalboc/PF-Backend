@@ -2,7 +2,14 @@ import { model, Schema } from "mongoose";
 
 const cartsCollection = "carts";
 const cartsSchema = new Schema({
-  products: [{ title: String, price: Number }],
+  products: [
+    {
+      productoID: {
+        type: Schema.Types.ObjectId,
+        ref: "products",
+      },
+    },
+  ],
   totalPrice: Number,
 });
 /*

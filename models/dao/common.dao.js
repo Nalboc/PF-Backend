@@ -4,7 +4,7 @@ export class Common {
   }
   async getAll() {
     try {
-      const result = await this.model.find();
+      const result = await this.model.find().populate("products.productoID");
       return result;
     } catch (e) {
       return null;
@@ -18,11 +18,12 @@ export class Common {
       return null;
     }
   }
-  async create(object) {
+  async crear(object) {
     try {
       const result = await this.model.create(object);
       return result;
     } catch (e) {
+      console.log("error");
       return null;
     }
   }

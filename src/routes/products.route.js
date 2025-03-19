@@ -34,7 +34,7 @@ route.get("/:pid", async (req, res) => {
 });
 route.post("/", async (req, res) => {
   const body = req.body;
-  const respuesta = await ProductosService(body);
+  const respuesta = await ProductosService.crear(body);
   if (!respuesta)
     return res
       .status(500)
@@ -46,7 +46,7 @@ route.put("/:pid", async (req, res) => {
   console.log(body);
   const id = req.params;
   const resultado = await ProductosService.update(id.pid, body);
-  if (!respuesta)
+  if (!resultado)
     return res
       .status(500)
       .json({ mensaje: "error en la consulta a la base de datos" });
@@ -57,7 +57,7 @@ route.put("/:pid", async (req, res) => {
 route.delete("/:pid", async (req, res) => {
   const id = req.params;
   const resultado = await ProductosService.delete(id);
-  if (!respuesta)
+  if (!resultado)
     return res
       .status(500)
       .json({ mensaje: "error en la consulta a la base de datos" });
