@@ -58,4 +58,35 @@ route.delete("/:cid", async (req, res) => {
     .status(200)
     .json({ mensaje: "se elimino un producto", payload: resultado });
 });
+route.delete("/:cid/products/:pid", async (req, res) => {
+  const { cid, pid } = req.params;
+
+  try {
+    const carrito = await CarritoService.getById(cid);
+    if (!carrito) {
+      return res.status(404).json({ message: "Carrito no encontrado" });
+    }
+    const productId = carrito.products.findIndex(
+      (product) => product.productoID.toString() === pid
+    );
+    if (productId === -1) {
+      return res
+        .status(404)
+        .json({ message: "Producto no encontrado en el carrito" });
+    }
+    carrito.products.splice(productId, 1);
+    const carritoActualizado = await CarritoService.update(cid, carrito, {
+      new: true,
+    });
+    res.status(200).json({
+      message: "Producto eliminado correctamente",
+      carritoActualizado,
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Error al eliminar el producto del carrito" });
+  }
+});
 export default route;
